@@ -10,9 +10,16 @@ class BuildingTest < Minitest::Test
 
     @unit1 = Apartment.new({number: "A1", monthly_rent: 1200, bathrooms: 1, bedrooms: 1})
     @unit2 = Apartment.new({number: "B2", monthly_rent: 999, bathrooms: 2, bedrooms: 2})
+    @unit3 = Apartment.new({number: "C3", monthly_rent: 1150, bathrooms: 2, bedrooms: 2})
+    @unit4 = Apartment.new({number: "D4", monthly_rent: 1500, bathrooms: 2, bedrooms: 3})
 
     @renter1 = Renter.new("Aurora")
     @renter2 = Renter.new("Tim")
+
+    @spencer = Renter.new("Spencer")
+    @jessie = Renter.new("Jessie")
+    @renter3 = Renter.new("Max")
+
   end
 
 #ITERATION 2
@@ -53,4 +60,43 @@ class BuildingTest < Minitest::Test
 
     assert_equal 1099.5, @building.average_rent
   end
+
+#ITERATION 3
+#NOTE:  renter1 = spencer; renter2 = jessie in 'Setup'
+  def test_building_checks_highest_rent
+    @building.add_unit(@unit1)
+    @building.add_unit(@unit2)
+    @building.add_unit(@unit3)
+    # require "pry"; binding.pry
+    assert_equal [], @building.rented_units
+
+    @unit2.add_renter(@spencer)
+
+    assert_equal [@unit2], @building.rented_units
+    assert_equal @spencer, @building.renter_with_highest_rent
+
+    @unit1.add_renter(@jessie)
+
+    assert_equal @jessie, @building.renter_with_highest_rent
+
+    @unit3.add_renter(@renter3)
+
+    assert_equal @jessie, @building.renter_with_highest_rent
+  end
+
+  def test_it_checks_bedrooms
+    @building.add_unit(@unit1)
+    @building.add_unit(@unit2)
+    @building.add_unit(@unit3)
+    @building.add_unit(@unit4)
+
+    expected = {
+      3 => ["D4" ],
+      2 => ["B2", "C3"],
+      1 => ["A1"]
+    }
+
+    assert_equal expected, @building.units_by_number_of_bedrooms
+  end
+  require "pry"; binding.pry
 end
