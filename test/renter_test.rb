@@ -3,13 +3,18 @@ require 'minitest/pride'
 require './lib/renter'
 
 class RenterTest < Minitest::Test
+  def setup
+    # @jessie = Renter.new("Jessie")
+    @renter1 = Renter.new("Jessie")
+
+  end
+
   def test_it_exists
-    jessie = Renter.new("Jessie")
-    assert_instance_of Renter, jessie
+    assert_instance_of Renter, @renter1
   end
 
   def test_it_has_a_name
-    jessie = Renter.new("Jessie")
-    assert_equal "Jessie", jessie.name
+    assert_equal "Jessie", @renter1.name
   end
+
 end
